@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collegio Ruggero Rossi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #c3a163 0%, #a48446 50%, #735928 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 14px;
+      color: #1e293b;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Profilo */
+    .profile {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .title {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 13.5px;
+      font-weight: 400;
+      line-height: 1.4;
+      max-width: 320px;
+      margin: 0 auto 16px auto;
+    }
+
+    /* Icone Social */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .social-icon {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 19px;
+      text-decoration: none;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.15);
+      color: #ffffff;
+    }
+
+    /* Card Item (Schede Bianche) */
+    .card {
+      background: #ffffff;
+      width: 100%;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Info Utili */
+    .info-header {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .info-list {
+      list-style: none;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .info-list li {
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Link Cards */
+    .link-card {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-right: 14px;
+    }
+
+    .icon-whatsapp {
+      background-color: #25d366;
+      color: white;
+      font-size: 24px;
+    }
+
+    .icon-book {
+      background-color: #b91c1c;
+      color: white;
+      font-size: 20px;
+    }
+
+    .link-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .link-sub {
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    /* Bottone Cambio Lingua */
+    .lang-switch-btn {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .lang-switch-btn:hover {
+      background: rgba(255, 255, 255, 0.38);
+      transform: scale(1.03);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Profilo -->
+    <div class="profile">
+      <img src="https://www.adisu.umbria.it/sites/default/files/styles/pb_wide_xxlg/public/2026-02/rossi.jpeg.webp?itok=HT6vjdAR" alt="Collegio Ruggero Rossi" class="avatar">
+      <h1 class="title">Collegio Ruggero Rossi</h1>
+      <p class="subtitle" id="subtitle">Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi</p>
+      
+      <!-- Icone Social -->
+      <div class="social-icons">
+        <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" class="social-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:francesco.ornicini@adisu.umbria.it" class="social-icon" title="Email"><i class="far fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- Scheda Info Utili -->
+    <div class="card">
+      <div class="info-header" id="info-header">Info utili</div>
+      <ul class="info-list">
+        <li><span class="info-label" id="lbl-phone">Numero di telefono Portineria :</span> 075 5152500</li>
+        <li><span class="info-label" id="lbl-email">Indirizzo Mail direttore:</span> francesco.ornicini@adisu.umbria.it</li>
+        <li><span class="info-label" id="lbl-wifi">Password WiFi:</span> adisustudenti</li>
+        <li><span class="info-label" id="lbl-address">Indirizzo della struttura:</span> Strada Trasimeno Ovest, 116/TER, Perugia, 06127</li>
+      </ul>
+    </div>
+
+    <!-- Link WhatsApp -->
+    <a href="https://chat.whatsapp.com" target="_blank" class="card link-card">
+      <div class="icon-box icon-whatsapp">
+        <i class="fab fa-whatsapp"></i>
+      </div>
+      <div class="link-text">
+        <div class="link-title" id="link-wa-title">Gruppo Whatsapp degli studenti (Comunicazioni sulla struttura ...)</div>
+        <div class="link-sub">chat.whatsapp.com</div>
+      </div>
+    </a>
+
+    <!-- Link Intragenzia -->
+    <a href="https://intragenzia.adisu.umbria.it" target="_blank" class="card link-card">
+      <div class="icon-box icon-book">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <div class="link-text">
+        <div class="link-title" id="link-intra-title">Intragenzia | Il sacro graal per le prenotazioni Servizio lavanderi...</div>
+        <div class="link-sub">intragenzia.adisu.umbria.it</div>
+      </div>
+    </a>
+
+    <!-- Bottone Cambio Lingua -->
+    <button class="lang-switch-btn" id="lang-btn" onclick="toggleLanguage()">
+      🌐 <span>English</span>
+    </button>
+
+    <div class="footer">
+      Collegio Ruggero Rossi
+    </div>
+
+  </div>
+
+  <!-- Script Cambio Lingua -->
+  <script>
+    let currentLang = 'it';
+
+    const translations = {
+      it: {
+        subtitle: "Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi",
+        infoHeader: "Info utili",
+        lblPhone: "Numero di telefono Portineria :",
+        lblEmail: "Indirizzo Mail direttore:",
+        lblWifi: "Password WiFi:",
+        lblAddress: "Indirizzo della struttura:",
+        waTitle: "Gruppo Whatsapp degli studenti (Comunicazioni sulla struttura ...)",
+        intraTitle: "Intragenzia | Il sacro graal per le prenotazioni Servizio lavanderi...",
+        btnText: "🌐 English"
+      },
+      en: {
+        subtitle: "Everything you need to survive here at Collegio Ruggero Rossi",
+        infoHeader: "Useful Info",
+        lblPhone: "Front Desk Phone Number:",
+        lblEmail: "Director's Email:",
+        lblWifi: "WiFi Password:",
+        lblAddress: "Facility Address:",
+        waTitle: "Students' WhatsApp Group (Residence announcements & updates)",
+        intraTitle: "Intragenzia | The holy grail for laundry service bookings...",
+        btnText: "🌐 Italiano"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'it' ? 'en' : 'it';
+      const t = translations[currentLang];
+
+      document.getElementById('subtitle').innerText = t.subtitle;
+      document.getElementById('info-header').innerText = t.infoHeader;
+      document.getElementById('lbl-phone').innerText = t.lblPhone;
+      document.getElementById('lbl-email').innerText = t.lblEmail;
+      document.getElementById('lbl-wifi').innerText = t.lblWifi;
+      document.getElementById('lbl-address').innerText = t.lblAddress;
+      document.getElementById('link-wa-title').innerText = t.waTitle;
+      document.getElementById('link-intra-title').innerText = t.intraTitle;
+      document.getElementById('lang-btn').innerHTML = t.btnText;
+      
+      document.documentElement.lang = currentLang;
+    }
+  </script>
+
+</body>
+</html>
