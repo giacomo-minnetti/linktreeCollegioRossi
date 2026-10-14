@@ -87,7 +87,7 @@
       color: #ffffff;
     }
 
-    /* Card Item (Schede Bianche) */
+    /* Card Item */
     .card {
       background: #ffffff;
       width: 100%;
@@ -126,6 +126,59 @@
     .info-label {
       font-weight: 600;
       color: #0f172a;
+    }
+
+    /* Stile Tabella Google Sheets */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 6px;
+    }
+
+    .status-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 5px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-table td {
+      padding: 8px 4px;
+      border-radius: 8px;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      min-width: 44px;
+    }
+
+    .cell-name {
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      opacity: 0.95;
+    }
+
+    .cell-status {
+      font-size: 12.5px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .cell-green {
+      background-color: #22c55e !important;
+      color: #ffffff !important;
+    }
+
+    .cell-red {
+      background-color: #ef4444 !important;
+      color: #ffffff !important;
+    }
+
+    .cell-neutral {
+      background-color: #e2e8f0;
+      color: #334155 !important;
     }
 
     /* Link Cards */
@@ -220,7 +273,7 @@
     
     <!-- Profilo -->
     <div class="profile">
-      <img src="https://www.adisu.umbria.it/sites/default/files/styles/pb_wide_xxlg/public/2026-02/rossi.jpeg.webp?itok=HT6vjdAR" alt="Collegio Ruggero Rossi" class="avatar">
+      <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=300&q=80" alt="Collegio Ruggero Rossi" class="avatar">
       <h1 class="title">Collegio Ruggero Rossi</h1>
       <p class="subtitle" id="subtitle">Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi</p>
       
@@ -238,10 +291,22 @@
       <div class="info-header" id="info-header">Info utili</div>
       <ul class="info-list">
         <li><span class="info-label" id="lbl-phone">Numero di telefono Portineria :</span> 075 5152500</li>
-        <li><span class="info-label" id="lbl-email">Indirizzo Mail direttore:</span> francesco.ornicini@adisu.umbria.it</li>
+        <li><span class="info-label" id="lbl-email">Indirizzo Mail direttore:</span> francesco.omicini@adisu.umbria.it</li>
         <li><span class="info-label" id="lbl-wifi">Password WiFi:</span> adisustudenti</li>
         <li><span class="info-label" id="lbl-address">Indirizzo della struttura:</span> Strada Trasimeno Ovest, 116/TER, Perugia, 06127</li>
       </ul>
+    </div>
+
+    <!-- Scheda Tabella Google Sheets -->
+    <div class="card">
+      <div class="info-header" id="table-header">Stato Servizi / Disponibilità</div>
+      <div class="table-wrapper">
+        <table class="status-table" id="status-table">
+          <tbody>
+            <tr><td colspan="7" style="color: #006aff; font-weight: normal; padding: 10px;">Caricamento stato...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Link WhatsApp -->
@@ -277,14 +342,18 @@
 
   </div>
 
-  <!-- Script Cambio Lingua -->
   <script>
+    // --- CONFIGURAZIONE GOOGLE SHEETS ---
+    // Inserisci qui l'ID del tuo Foglio Google pubblico (si trova nell'URL del foglio)
+    const SPREADSHEET_ID = '1uICyN01KDbbL2EsdRwlsi0Lv_bmgPJ_NgbFDom4o9dE';
+
     let currentLang = 'it';
 
     const translations = {
       it: {
         subtitle: "Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi",
         infoHeader: "Info utili",
+        tableHeader: "Stato Servizi / Disponibilità",
         lblPhone: "Numero di telefono Portineria :",
         lblEmail: "Indirizzo Mail direttore:",
         lblWifi: "Password WiFi:",
@@ -296,6 +365,7 @@
       en: {
         subtitle: "Everything you need to survive here at Collegio Ruggero Rossi",
         infoHeader: "Useful Info",
+        tableHeader: "Service Status / Availability",
         lblPhone: "Front Desk Phone Number:",
         lblEmail: "Director's Email:",
         lblWifi: "WiFi Password:",
@@ -312,6 +382,7 @@
 
       document.getElementById('subtitle').innerText = t.subtitle;
       document.getElementById('info-header').innerText = t.infoHeader;
+      document.getElementById('table-header').innerText = t.tableHeader;
       document.getElementById('lbl-phone').innerText = t.lblPhone;
       document.getElementById('lbl-email').innerText = t.lblEmail;
       document.getElementById('lbl-wifi').innerText = t.lblWifi;
@@ -322,6 +393,99 @@
       
       document.documentElement.lang = currentLang;
     }
+
+    // --- LOGICA LETTURA GOOGLE SHEETS ---
+    async function fetchGoogleSheetData() {
+      const table = document.getElementById('status-table');
+
+      // Se non è ancora stato inserito l'ID reale, mostra dati dimostrativi 2x5
+      if (SPREADSHEET_ID === 'INSERISCI_QUI_IL_TUO_ID_GOOGLE_SHEETS') {
+        const demoData = [
+          ['LAV1', 'LAV2', 'LAV3', 'LAV4', 'LAV5'],
+          ['OK', 'NO', 'OK', 'OK', 'NO']
+        ];
+        renderTable(demoData);
+        return;
+      }
+
+      const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const data = JSON.parse(jsonText);
+
+        const rows = data.table.rows.map(row => 
+          row.c.map(cell => cell ? (cell.v !== null ? cell.v.toString() : '') : '')
+        );
+
+        renderTable(rows);
+      } catch (error) {
+        console.error('Errore nel caricamento del foglio Google:', error);
+        table.innerHTML = '<tbody><tr><td style="color:#ef4444; padding:10px;">Errore caricamento dati</td></tr></tbody>';
+      }
+    }
+
+    function renderTable(data) {
+      const table = document.getElementById('status-table');
+      if (!data || data.length === 0) {
+        table.innerHTML = '<tbody><tr><td style="color:#ef4444; padding:10px;">Nessun dato disponibile</td></tr></tbody>';
+        return;
+      }
+
+      let html = '<tbody><tr>';
+
+      if (data.length >= 2) {
+        const labels = data[0] || [];
+        const statuses = data[1] || [];
+        const maxCols = Math.max(labels.length, statuses.length);
+
+        for (let i = 0; i < maxCols; i++) {
+          const lblText = (labels[i] || '').trim();
+          const statusText = (statuses[i] || '').trim();
+
+          if (!lblText && !statusText) continue;
+
+          const lower = statusText.toLowerCase();
+          let cellClass = 'cell-neutral';
+
+          if (['ok', 'verde', 'green', 'libero', '1', 'si', 'yes'].includes(lower)) {
+            cellClass = 'cell-green';
+          } else if (['no', 'rosso', 'red', 'occupato', '0'].includes(lower)) {
+            cellClass = 'cell-red';
+          }
+
+          html += `
+            <td class="${cellClass}">
+              ${lblText ? `<div class="cell-name">${lblText}</div>` : ''}
+              ${statusText ? `<div class="cell-status">${statusText}</div>` : ''}
+            </td>`;
+        }
+      } else {
+        data[0].forEach(cell => {
+          const text = (cell || '').trim();
+          if (!text) return;
+
+          const lower = text.toLowerCase();
+          let cellClass = 'cell-neutral';
+
+          if (['ok', 'verde', 'green', 'libero', '1', 'si', 'yes'].includes(lower)) {
+            cellClass = 'cell-green';
+          } else if (['no', 'rosso', 'red', 'occupato', '0'].includes(lower)) {
+            cellClass = 'cell-red';
+          }
+
+          html += `<td class="${cellClass}"><div class="cell-name">${text}</div></td>`;
+        });
+      }
+
+      html += '</tr></tbody>';
+      table.innerHTML = html;
+    }
+
+    // Carica i dati all'apertura della pagina
+    document.addEventListener('DOMContentLoaded', fetchGoogleSheetData);
   </script>
 
 </body>
