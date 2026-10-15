@@ -2,429 +2,110 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Collegio Ruggero Rossi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: linear-gradient(180deg, #c3a163 0%, #a48446 50%, #735928 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 24px 14px;
-      color: #1e293b;
+      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+      padding: 24px 14px; color: #1e293b;
     }
+    .container { width: 100%; max-width: 420px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+    .profile { text-align: center; margin-top: 10px; margin-bottom: 20px; width: 100%; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.85); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+    .title { color: #ffffff; font-size: 22px; font-weight: 700; margin-top: 14px; margin-bottom: 6px; }
+    .subtitle { color: rgba(255, 255, 255, 0.95); font-size: 13.5px; font-weight: 400; line-height: 1.4; max-width: 320px; margin: 0 auto 16px auto; }
+    .card { background: #ffffff; width: 100%; border-radius: 16px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .info-header { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+    .table-wrapper { width: 100%; overflow-x: auto; margin-top: 6px; }
+    .status-table { width: 100%; border-collapse: separate; border-spacing: 5px; text-align: center; font-size: 12px; font-weight: 700; }
+    .status-table td { padding: 8px 4px; border-radius: 8px; color: #ffffff; min-width: 50px; }
+    .cell-name { font-size: 11px; font-weight: 600; line-height: 1.2; margin-bottom: 2px; opacity: 0.95; }
+    .cell-status { font-size: 12.5px; font-weight: 800; line-height: 1.2; }
+    
+    .cell-green { background-color: #22c55e !important; color: #ffffff !important; }
+    .cell-red { background-color: #ef4444 !important; color: #ffffff !important; }
+    .cell-amber { background-color: #f59e0b !important; color: #ffffff !important; }
+    .cell-neutral { background-color: #e2e8f0; color: #334155 !important; }
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Profilo */
-    .profile {
-      text-align: center;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .title {
-      color: #ffffff;
-      font-size: 22px;
-      font-weight: 700;
-      margin-top: 14px;
-      margin-bottom: 6px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-
-    .subtitle {
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 13.5px;
-      font-weight: 400;
-      line-height: 1.4;
-      max-width: 320px;
-      margin: 0 auto 16px auto;
-    }
-
-    /* Icone Social */
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 8px;
-    }
-
-    .social-icon {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 19px;
-      text-decoration: none;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .social-icon:hover {
-      transform: scale(1.15);
-      color: #ffffff;
-    }
-
-    /* Card Item */
-    .card {
-      background: #ffffff;
-      width: 100%;
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Info Utili */
-    .info-header {
-      font-size: 15px;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 10px;
-    }
-
-    .info-list {
-      list-style: none;
-      font-size: 13px;
-      color: #334155;
-      line-height: 1.6;
-    }
-
-    .info-list li {
-      margin-bottom: 6px;
-      word-break: break-word;
-    }
-
-    .info-label {
-      font-weight: 600;
-      color: #0f172a;
-    }
-
-    /* Stile Tabella Google Sheets */
-    .table-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      margin-top: 6px;
-    }
-
-    .status-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 5px;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .status-table td {
-      padding: 8px 4px;
-      border-radius: 8px;
-      color: #ffffff;
-      transition: all 0.3s ease;
-      min-width: 44px;
-    }
-
-    .cell-name {
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 1.2;
-      margin-bottom: 2px;
-      opacity: 0.95;
-    }
-
-    .cell-status {
-      font-size: 12.5px;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
-    .cell-green {
-      background-color: #22c55e !important;
-      color: #ffffff !important;
-    }
-
-    .cell-red {
-      background-color: #ef4444 !important;
-      color: #ffffff !important;
-    }
-
-    .cell-neutral {
-      background-color: #e2e8f0;
-      color: #334155 !important;
-    }
-
-    /* Link Cards */
-    .link-card {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .icon-box {
-      width: 44px;
-      height: 44px;
+    /* Stile Banner di Errore */
+    .error-banner {
+      background-color: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      padding: 12px 14px;
       border-radius: 10px;
+      font-size: 12.5px;
+      line-height: 1.4;
+      margin-top: 8px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-right: 14px;
+      gap: 10px;
     }
-
-    .icon-whatsapp {
-      background-color: #25d366;
-      color: white;
-      font-size: 24px;
-    }
-
-    .icon-book {
-      background-color: #b91c1c;
-      color: white;
-      font-size: 20px;
-    }
-
-    .link-text {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .link-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #0f172a;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
-    }
-
-    .link-sub {
-      font-size: 11.5px;
-      color: #64748b;
-    }
-
-    /* Bottone Cambio Lingua */
-    .lang-switch-btn {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 10px 22px;
-      border-radius: 30px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 15px;
-      margin-bottom: 10px;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .lang-switch-btn:hover {
-      background: rgba(255, 255, 255, 0.38);
-      transform: scale(1.03);
-    }
-
-    /* Footer */
-    .footer {
-      margin-top: 10px;
-      margin-bottom: 20px;
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.7);
-      text-align: center;
-    }
+    .error-banner i { font-size: 18px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    
-    <!-- Profilo -->
     <div class="profile">
       <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=300&q=80" alt="Collegio Ruggero Rossi" class="avatar">
       <h1 class="title">Collegio Ruggero Rossi</h1>
-      <p class="subtitle" id="subtitle">Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi</p>
-      
-      <!-- Icone Social -->
-      <div class="social-icons">
-        <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="#" class="social-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:francesco.ornicini@adisu.umbria.it" class="social-icon" title="Email"><i class="far fa-envelope"></i></a>
-      </div>
+      <p class="subtitle">Disponibilità Lavanderia / Servizi</p>
     </div>
 
-    <!-- Scheda Info Utili -->
     <div class="card">
-      <div class="info-header" id="info-header">Info utili</div>
-      <ul class="info-list">
-        <li><span class="info-label" id="lbl-phone">Numero di telefono Portineria :</span> 075 5152500</li>
-        <li><span class="info-label" id="lbl-email">Indirizzo Mail direttore:</span> francesco.omicini@adisu.umbria.it</li>
-        <li><span class="info-label" id="lbl-wifi">Password WiFi:</span> adisustudenti</li>
-        <li><span class="info-label" id="lbl-address">Indirizzo della struttura:</span> Strada Trasimeno Ovest, 116/TER, Perugia, 06127</li>
-      </ul>
-    </div>
-
-    <!-- Scheda Tabella Google Sheets -->
-    <div class="card">
-      <div class="info-header" id="table-header">Stato Servizi / Disponibilità</div>
-      <div class="table-wrapper">
-        <table class="status-table" id="status-table">
-          <tbody>
-            <tr><td colspan="7" style="color: #006aff; font-weight: normal; padding: 10px;">Caricamento stato...</td></tr>
-          </tbody>
-        </table>
+      <div class="info-header">Stato Servizi</div>
+      <div id="content-container">
+        <div class="table-wrapper">
+          <table class="status-table" id="status-table">
+            <tbody>
+              <tr><td colspan="7" style="color: #006aff; font-weight: normal; padding: 10px;">Verifica disponibilità in corso...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
-    <!-- Link WhatsApp -->
-    <a href="https://chat.whatsapp.com" target="_blank" class="card link-card">
-      <div class="icon-box icon-whatsapp">
-        <i class="fab fa-whatsapp"></i>
-      </div>
-      <div class="link-text">
-        <div class="link-title" id="link-wa-title">Gruppo Whatsapp degli studenti (Comunicazioni sulla struttura ...)</div>
-        <div class="link-sub">chat.whatsapp.com</div>
-      </div>
-    </a>
-
-    <!-- Link Intragenzia -->
-    <a href="https://intragenzia.adisu.umbria.it" target="_blank" class="card link-card">
-      <div class="icon-box icon-book">
-        <i class="fas fa-book-open"></i>
-      </div>
-      <div class="link-text">
-        <div class="link-title" id="link-intra-title">Intragenzia | Il sacro graal per le prenotazioni Servizio lavanderi...</div>
-        <div class="link-sub">intragenzia.adisu.umbria.it</div>
-      </div>
-    </a>
-
-    <!-- Bottone Cambio Lingua -->
-    <button class="lang-switch-btn" id="lang-btn" onclick="toggleLanguage()">
-      🌐 <span>English</span>
-    </button>
-
-    <div class="footer">
-      Collegio Ruggero Rossi
-    </div>
-
   </div>
 
   <script>
-    // --- CONFIGURAZIONE GOOGLE SHEETS ---
-    // Inserisci qui l'ID del tuo Foglio Google pubblico (si trova nell'URL del foglio)
-    const SPREADSHEET_ID = '1uICyN01KDbbL2EsdRwlsi0Lv_bmgPJ_NgbFDom4o9dE';
-
-    let currentLang = 'it';
-
-    const translations = {
-      it: {
-        subtitle: "Tutto il necessario per sopravvivere qui al collegio Ruggero Rossi",
-        infoHeader: "Info utili",
-        tableHeader: "Stato Servizi / Disponibilità",
-        lblPhone: "Numero di telefono Portineria :",
-        lblEmail: "Indirizzo Mail direttore:",
-        lblWifi: "Password WiFi:",
-        lblAddress: "Indirizzo della struttura:",
-        waTitle: "Gruppo Whatsapp degli studenti (Comunicazioni sulla struttura ...)",
-        intraTitle: "Intragenzia | Il sacro graal per le prenotazioni Servizio lavanderi...",
-        btnText: "🌐 English"
-      },
-      en: {
-        subtitle: "Everything you need to survive here at Collegio Ruggero Rossi",
-        infoHeader: "Useful Info",
-        tableHeader: "Service Status / Availability",
-        lblPhone: "Front Desk Phone Number:",
-        lblEmail: "Director's Email:",
-        lblWifi: "WiFi Password:",
-        lblAddress: "Facility Address:",
-        waTitle: "Students' WhatsApp Group (Residence announcements & updates)",
-        intraTitle: "Intragenzia | The holy grail for laundry service bookings...",
-        btnText: "🌐 Italiano"
-      }
-    };
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'it' ? 'en' : 'it';
-      const t = translations[currentLang];
-
-      document.getElementById('subtitle').innerText = t.subtitle;
-      document.getElementById('info-header').innerText = t.infoHeader;
-      document.getElementById('table-header').innerText = t.tableHeader;
-      document.getElementById('lbl-phone').innerText = t.lblPhone;
-      document.getElementById('lbl-email').innerText = t.lblEmail;
-      document.getElementById('lbl-wifi').innerText = t.lblWifi;
-      document.getElementById('lbl-address').innerText = t.lblAddress;
-      document.getElementById('link-wa-title').innerText = t.waTitle;
-      document.getElementById('link-intra-title').innerText = t.intraTitle;
-      document.getElementById('lang-btn').innerHTML = t.btnText;
-      
-      document.documentElement.lang = currentLang;
+    function loadData() {
+      google.script.run
+        .withSuccessHandler(handleResponse)
+        .withFailureHandler((err) => {
+          console.error(err);
+          showError("Impossibile caricare i dati al momento.");
+        })
+        .getServicesData();
     }
 
-    // --- LOGICA LETTURA GOOGLE SHEETS ---
-    async function fetchGoogleSheetData() {
-      const table = document.getElementById('status-table');
-
-      // Se non è ancora stato inserito l'ID reale, mostra dati dimostrativi 2x5
-      if (SPREADSHEET_ID === 'INSERISCI_QUI_IL_TUO_ID_GOOGLE_SHEETS') {
-        const demoData = [
-          ['LAV1', 'LAV2', 'LAV3', 'LAV4', 'LAV5'],
-          ['OK', 'NO', 'NO', 'OK', 'NO']
-        ];
-        renderTable(demoData);
+    function handleResponse(response) {
+      if (!response) {
+        showError("Nessuna risposta dal server.");
         return;
       }
 
-      const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
-
-      try {
-        const response = await fetch(url);
-        const text = await response.text();
-        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-        const data = JSON.parse(jsonText);
-
-        const rows = data.table.rows.map(row => 
-          row.c.map(cell => cell ? (cell.v !== null ? cell.v.toString() : '') : '')
-        );
-
-        renderTable(rows);
-      } catch (error) {
-        console.error('Errore nel caricamento del foglio Google:', error);
-        table.innerHTML = '<tbody><tr><td style="color:#ef4444; padding:10px;">Errore caricamento dati</td></tr></tbody>';
+      // Se il backend segnala che i cookie sono scaduti
+      if (response.error) {
+        showError(response.message);
+        return;
       }
+
+      // Se non ci sono errori, mostra la tabella
+      renderTable(response.data);
+    }
+
+    function showError(message) {
+      const container = document.getElementById('content-container');
+      container.innerHTML = `
+        <div class="error-banner">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>
+            <strong>Servizio temporaneamente non disponibile:</strong><br>
+            ${message}
+          </div>
+        </div>`;
     }
 
     function renderTable(data) {
@@ -435,58 +116,39 @@
       }
 
       let html = '<tbody><tr>';
+      const labels = data[0] || [];
+      const statuses = data[1] || [];
+      const maxCols = Math.max(labels.length, statuses.length);
 
-      if (data.length >= 2) {
-        const labels = data[0] || [];
-        const statuses = data[1] || [];
-        const maxCols = Math.max(labels.length, statuses.length);
+      for (let i = 0; i < maxCols; i++) {
+        const lblText = (labels[i] || '').toString().trim();
+        const statusText = (statuses[i] || '').toString().trim();
 
-        for (let i = 0; i < maxCols; i++) {
-          const lblText = (labels[i] || '').trim();
-          const statusText = (statuses[i] || '').trim();
+        if (!lblText && !statusText) continue;
 
-          if (!lblText && !statusText) continue;
+        const lower = statusText.toLowerCase();
+        let cellClass = 'cell-neutral';
 
-          const lower = statusText.toLowerCase();
-          let cellClass = 'cell-neutral';
-
-          if (['ok', 'verde', 'green', 'libero', '1', 'si', 'yes'].includes(lower)) {
-            cellClass = 'cell-green';
-          } else if (['no', 'rosso', 'red', 'occupato', '0'].includes(lower)) {
-            cellClass = 'cell-red';
-          }
-
-          html += `
-            <td class="${cellClass}">
-              ${lblText ? `<div class="cell-name">${lblText}</div>` : ''}
-              ${statusText ? `<div class="cell-status">${statusText}</div>` : ''}
-            </td>`;
+        if (['ok', 'verde', 'green', 'libero', '1', 'si', 'yes'].includes(lower)) {
+          cellClass = 'cell-green';
+        } else if (['guasto', 'manutenzione', 'fuori servizio'].includes(lower)) {
+          cellClass = 'cell-amber';
+        } else if (['no', 'rosso', 'red', 'occupato', '0'].includes(lower)) {
+          cellClass = 'cell-red';
         }
-      } else {
-        data[0].forEach(cell => {
-          const text = (cell || '').trim();
-          if (!text) return;
 
-          const lower = text.toLowerCase();
-          let cellClass = 'cell-neutral';
-
-          if (['ok', 'verde', 'green', 'libero', '1', 'si', 'yes'].includes(lower)) {
-            cellClass = 'cell-green';
-          } else if (['no', 'rosso', 'red', 'occupato', '0'].includes(lower)) {
-            cellClass = 'cell-red';
-          }
-
-          html += `<td class="${cellClass}"><div class="cell-name">${text}</div></td>`;
-        });
+        html += `
+          <td class="${cellClass}">
+            ${lblText ? `<div class="cell-name">${lblText}</div>` : ''}
+            ${statusText ? `<div class="cell-status">${statusText}</div>` : ''}
+          </td>`;
       }
 
       html += '</tr></tbody>';
       table.innerHTML = html;
     }
 
-    // Carica i dati all'apertura della pagina
-    document.addEventListener('DOMContentLoaded', fetchGoogleSheetData);
+    document.addEventListener('DOMContentLoaded', loadData);
   </script>
-
 </body>
 </html>
